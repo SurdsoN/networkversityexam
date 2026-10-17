@@ -27,9 +27,27 @@ Admins manage the question bank and see results from a password-protected panel.
 | Resume | Refreshing the page or losing connection resumes the same exam. The timer keeps running |
 | Results | Admin sees every attempt, the student's answers, the certificate, pass rate and average score, and can export to CSV |
 
-## Run it
+## Deploy on Vercel
 
-Requires Node.js 18+.
+Vercel runs the app as serverless functions, which can't keep files, so the data lives in a Postgres database. Vercel's Neon integration has a free tier.
+
+1. **Import the repo.** In Vercel, choose **Add New → Project**, pick `networkversityexam`, and keep **Framework Preset: Other**. There's no build command; `vercel.json` already sets everything up.
+2. **Add a database.** Open the project's **Storage** tab, choose **Create Database → Neon (Postgres)**, and connect it to the project. This adds `DATABASE_URL` / `POSTGRES_URL` automatically.
+3. **Set the admin password.** Under **Settings → Environment Variables**, add `ADMIN_PASSWORD` with a strong password. Optionally add `ADMIN_USERNAME`, which defaults to `admin`.
+4. **Redeploy** under **Deployments → ⋯ → Redeploy**, so the new variables take effect.
+5. Open `https://<your-project>.vercel.app/admin` and log in with `admin` and your password.
+
+The tables are created, and the 104 starting questions loaded, on the first request.
+
+**Admin password notes**
+- `ADMIN_PASSWORD` is only used to **create** the admin account the first time. Change it afterwards from **Admin → Account**. Changing the environment variable later does nothing.
+- If you forget the password, run `DELETE FROM nv_kv WHERE key = 'admin';` in the Neon SQL editor (Vercel → Storage → your database → Open in Neon). The account is then recreated from `ADMIN_PASSWORD` on the next request. Questions and results are kept.
+
+**What's stored where:** the tables `nv_questions`, `nv_attempts`, `nv_kv` (settings, admin account, session-signing key) and `nv_login_failures`. Back up the database (Neon has point-in-time restore) to keep results.
+
+## Run it on your own computer
+
+Requires Node.js 20+. With no database URL set, data is stored as JSON files in `./data`.
 
 ```bash
 npm install
@@ -37,32 +55,26 @@ ADMIN_PASSWORD='choose-a-strong-password' npm start
 # → http://localhost:3000  (admin: http://localhost:3000/admin, username "admin")
 ```
 
-If `ADMIN_PASSWORD` is not set on first start, a random password is generated and printed in the server log.
-The password can be changed later from **Admin → Account**.
+Off Vercel, if `ADMIN_PASSWORD` is not set on first start, a random password is generated and printed in the server log.
+To use Postgres locally, set `DATABASE_URL=postgres://...`.
 
-Run the tests with `npm test`.
+Run the tests with `npm test`. To run them against Postgres too, use `TEST_DATABASE_URL=postgres://... npm test`; this drops the `nv_*` tables first.
 
 ### Environment variables
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `PORT` | `3000` | HTTP port |
-| `ADMIN_USERNAME` | `admin` | Admin username, used only on first start |
-| `ADMIN_PASSWORD` | random | Admin password, used only on first start |
-| `DATA_DIR` | `./data` | Where results and the question bank are stored. **Must be on persistent storage in production** |
-| `TRUST_PROXY` | `1` | How many reverse proxies sit in front of the app, so the real student IP is used for the attempt limit. Keep `1` on Render/Railway/Heroku/behind Nginx. Use `false` if Node is exposed directly |
+| `DATABASE_URL` / `POSTGRES_URL` | none | Postgres connection. Set automatically by Vercel's Neon integration. **Required on Vercel** |
+| `ADMIN_USERNAME` | `admin` | Admin username, used only when the account is first created |
+| `ADMIN_PASSWORD` | random (local only) | Admin password, used only when the account is first created. **Required on Vercel** |
+| `SESSION_SECRET` | random, stored in the database | Optional fixed key for signing admin login cookies |
+| `DATA_DIR` | `./data` | JSON-file storage location when no database is configured |
+| `PORT` | `3000` | HTTP port when running locally |
+| `TRUST_PROXY` | `1` | Reverse proxies in front of the app, so the real student IP is used. Ignored on Vercel, which reports the IP directly |
 
-## Deploying
+### Other hosts
 
-The app keeps its data in JSON files under `DATA_DIR`, so it needs a host with a **persistent disk**:
-
-- **Render:** create a *Web Service* (build `npm install`, start `npm start`), add a *Disk* mounted at e.g. `/var/data`, and set `DATA_DIR=/var/data` and `ADMIN_PASSWORD`.
-- **Railway:** add a Volume and point `DATA_DIR` at it.
-- **VPS:** `npm start` under pm2 or systemd behind Nginx.
-
-Serverless hosts such as Vercel or Netlify Functions are **not** suitable, because they have no persistent file system.
-
-Back up `DATA_DIR/db.json` and `DATA_DIR/attempts/` to keep results.
+Render, Railway or a VPS also work. Either connect Postgres with `DATABASE_URL`, or use JSON files with `DATA_DIR` on a persistent disk.
 
 ## Question bank
 
@@ -71,7 +83,7 @@ Back up `DATA_DIR/db.json` and `DATA_DIR/attempts/` to keep results.
 - **61** come from the supplied *networkversity_Questions.txt*, renumbered.
 - **43** are tagged `derived`. They were written to bring the bank above 100 and restate facts already present in the supplied questions (for example the PV range and bonus % of each rank, or false versions of stated facts). Please review them: in the admin panel, filter by *Needs review (derived)*. Editing and saving a question marks it as reviewed.
 
-On first start, the seed is copied into `DATA_DIR/db.json`. From then on the admin panel is the source of truth, and the seed file is not read again.
+On first start, the seed is copied into the database (or `DATA_DIR/db.json` without one). From then on the admin panel is the source of truth, and the seed file is not read again.
 
 ## How the attempt limit works
 
@@ -96,13 +108,16 @@ An exam in progress is also tied to the attempt ID saved in the browser, so chan
 
 ```
 server.js               Express app: student API, admin API, static files
-lib/store.js            JSON-file storage (db.json + one file per attempt)
+api/index.js            Vercel function entry (runs server.js); routing in vercel.json
+lib/store.js            Picks storage: Postgres (lib/store-pg.js) or JSON files (lib/store-file.js)
+lib/match.js            The "same student" rule for the attempt limit
 lib/exam.js             Question draw, answer saving, grading, grade bands
-lib/auth.js             Admin password hashing, sessions, login rate limit
+lib/auth.js             Admin password hashing, signed session cookies, login rate limit
 data/questions.seed.json  Initial question bank
 public/index.html       Student exam (start → exam → result/certificate)
 public/admin.html       Admin panel
 public/js/certificate.js  Draws the certificate on a canvas, exports PNG/PDF
 public/js/device.js     Device ID + browser fingerprint for the attempt limit
+public/vendor/          jsPDF 4.2.1 (MIT), used for certificate PDFs
 test/                   Unit + API tests (node --test)
 ```

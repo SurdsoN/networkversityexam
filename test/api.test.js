@@ -2,13 +2,11 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawn } from 'child_process';
-import fs from 'fs';
-import os from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { testStorageEnv } from './helpers.js';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const DATA_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'nv-api-'));
 const PORT = 3900 + Math.floor(Math.random() * 90);
 const BASE = `http://127.0.0.1:${PORT}`;
 let server;
@@ -29,7 +27,7 @@ async function call(method, url, { body, ip = '10.0.0.1', cookie, device, fp } =
 before(async () => {
   server = spawn(process.execPath, ['server.js'], {
     cwd: ROOT,
-    env: { ...process.env, PORT: String(PORT), DATA_DIR, ADMIN_USERNAME: 'admin', ADMIN_PASSWORD: 'secret-pass' },
+    env: { ...process.env, ...(await testStorageEnv('nv-api-')), PORT: String(PORT), ADMIN_USERNAME: 'admin', ADMIN_PASSWORD: 'secret-pass' },
     stdio: 'pipe',
   });
   for (let i = 0; i < 50; i++) {
@@ -131,4 +129,22 @@ test('admin endpoints require login and manage the bank', async () => {
   assert.equal((await call('POST', '/api/admin/reset-device', { cookie, body: { deviceId: DEV_A } })).status, 200);
   const csv = await call('GET', '/api/admin/attempts.csv', { cookie });
   assert.match(csv.body, /"Name","IP"/);
+});
+
+test('admin sessions are signed cookies that end when the password changes', async () => {
+  const login = await call('POST', '/api/admin/login', { body: { username: 'admin', password: 'secret-pass' } });
+  const cookie = login.headers.get('set-cookie').split(';')[0];
+  assert.equal((await call('GET', '/api/admin/session', { cookie })).body.username, 'admin');
+  const forged = cookie.replace(/\.[0-9a-f]+$/, '.' + '0'.repeat(64));
+  assert.equal((await call('GET', '/api/admin/session', { cookie: forged })).body.loggedIn, false);
+  assert.equal((await call('PUT', '/api/admin/password', { cookie, body: { current: 'secret-pass', next: 'new-secret-pass' } })).status, 200);
+  assert.equal((await call('GET', '/api/admin/questions', { cookie })).status, 401);
+  const relogin = await call('POST', '/api/admin/login', { ip: '10.7.7.7', body: { username: 'admin', password: 'new-secret-pass' } });
+  assert.equal(relogin.status, 200);
+});
+
+test('five wrong passwords lock that IP out', async () => {
+  for (let i = 0; i < 5; i++) await call('POST', '/api/admin/login', { ip: '10.6.6.6', body: { username: 'admin', password: 'wrong' } });
+  const r = await call('POST', '/api/admin/login', { ip: '10.6.6.6', body: { username: 'admin', password: 'new-secret-pass' } });
+  assert.equal(r.status, 429);
 });
