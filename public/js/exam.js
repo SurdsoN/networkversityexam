@@ -12,7 +12,7 @@
   async function api(path, body) {
     const res = await fetch(path, {
       method: body === undefined ? 'GET' : 'POST',
-      headers: body === undefined ? {} : { 'Content-Type': 'application/json' },
+      headers: { ...window.Device.headers(), ...(body === undefined ? {} : { 'Content-Type': 'application/json' }) },
       body: body === undefined ? undefined : JSON.stringify(body),
     });
     let data = {};
@@ -49,6 +49,7 @@
     const stored = storage.get(ATTEMPT_KEY);
     try {
       status = await api(`/api/exam/status${stored ? `?attemptId=${encodeURIComponent(stored)}` : ''}`);
+      window.Device.remember(status.deviceId);
     } catch (e) {
       show('start');
       alertBox($('start-alert'), 'error', `Could not load the exam: ${e.message}`);
@@ -62,7 +63,7 @@
         ? 'One question at a time. You cannot go back to a previous question'
         : 'Move freely between questions until you submit',
       `Pass mark: ${s.passMark} points. Passing earns a downloadable certificate`,
-      `Attempts allowed: ${s.maxAttempts} (you have ${status.attemptsLeft} left)`,
+      `Attempts allowed: ${s.maxAttempts} per device (you have ${status.attemptsLeft} left)`,
     ];
     $('rules').innerHTML = '';
     for (const r of rules) {
@@ -82,7 +83,7 @@
       $('resume-box').classList.add('hidden');
       $('start-form').classList.toggle('hidden', status.attemptsLeft === 0);
       if (status.attemptsLeft === 0) {
-        alertBox($('start-alert'), 'warn', `You have used all ${s.maxAttempts} attempt(s) allowed for this exam. Your results are below.`);
+        alertBox($('start-alert'), 'warn', `You have used all ${s.maxAttempts} attempt(s) allowed for this exam on this device. Your results are below.`);
       }
     }
 

@@ -66,13 +66,13 @@
   <div data-panel="results" class="hidden">
     <div class="stats" id="stats"></div>
     <div class="toolbar">
-      <input type="text" id="r-search" placeholder="Search by name or IP…">
+      <input type="text" id="r-search" placeholder="Search by name, IP or device…">
       <a class="btn secondary" href="/api/admin/attempts.csv">Export CSV</a>
       <button class="btn secondary" id="reset-ip-btn" type="button">Reset attempts for an IP</button>
     </div>
     <div class="card table-wrap" style="padding:8px 12px">
       <table class="data">
-        <thead><tr><th>Student</th><th>IP address</th><th>Date</th><th>Score</th><th>Grade</th><th>Status</th><th></th></tr></thead>
+        <thead><tr><th>Student</th><th>IP address</th><th>Device</th><th>Date</th><th>Score</th><th>Grade</th><th>Status</th><th></th></tr></thead>
         <tbody id="r-body"></tbody>
       </table>
     </div>
@@ -87,7 +87,7 @@
         <p class="small muted" id="s-count-note" style="margin:6px 0 0"></p>
       </div>
       <div class="field"><label for="s-time">Time limit (minutes)</label><input type="number" id="s-time" min="1" max="600" required></div>
-      <div class="field"><label for="s-attempts">Maximum attempts per student (IP address)</label><input type="number" id="s-attempts" min="1" max="20" required></div>
+      <div class="field"><label for="s-attempts">Maximum attempts per student (counted per device)</label><input type="number" id="s-attempts" min="1" max="20" required></div>
       <div class="field">
         <label for="s-pass">Pass mark (points out of 100) — certificate is issued at or above this</label>
         <input type="number" id="s-pass" min="1" max="100" required>

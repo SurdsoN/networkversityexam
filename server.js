@@ -1,4 +1,5 @@
 import express from 'express';
+import crypto from 'crypto';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import * as store from './lib/store.js';
@@ -47,24 +48,53 @@ function publicSettings() {
   };
 }
 
-function inProgressFor(ip, attemptId) {
+// Identifies the student's device. The device ID lives in two places (an
+// HttpOnly cookie and the page's localStorage, sent as X-Device-Id) so that
+// clearing just one of them does not reset it. The fingerprint (a hash of
+// browser/screen/hardware traits, sent as X-Device-Fp) catches a student who
+// clears both but stays on the same network. See exam.matchesStudent.
+const DEVICE_COOKIE = 'nv_device';
+const DEVICE_MAX_AGE = 400 * 24 * 60 * 60; // the longest browsers allow
+const UUID = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+
+function readCookie(req, name) {
+  for (const part of (req.headers.cookie || '').split(';')) {
+    const [k, ...rest] = part.trim().split('=');
+    if (k === name) return rest.join('=');
+  }
+  return null;
+}
+
+function identify(req, res) {
+  const fromCookie = readCookie(req, DEVICE_COOKIE);
+  const fromHeader = req.get('X-Device-Id');
+  const deviceId = [fromCookie, fromHeader].find((v) => v && UUID.test(v)) || crypto.randomUUID();
+  if (fromCookie !== deviceId) {
+    res.append('Set-Cookie', `${DEVICE_COOKIE}=${deviceId}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${DEVICE_MAX_AGE}${req.secure ? '; Secure' : ''}`);
+  }
+  const fp = req.get('X-Device-Fp');
+  return { ip: clientIp(req), deviceId, fingerprint: fp && /^[a-f0-9]{16,64}$/.test(fp) ? fp : null };
+}
+
+function inProgressFor(who, attemptId) {
   const attempts = store.data().attempts;
   return (
     attempts.find((a) => a.status === 'in_progress' && attemptId && a.id === attemptId) ||
-    attempts.find((a) => a.status === 'in_progress' && a.ip === ip)
+    attempts.find((a) => a.status === 'in_progress' && exam.matchesStudent(a, who))
   );
 }
 
 // The browser keeps its attempt id, which lets a student resume after a
 // refresh even if their mobile IP changed mid-exam.
 app.get('/api/exam/status', (req, res) => {
-  const ip = clientIp(req);
+  const who = identify(req, res);
   const attemptId = typeof req.query.attemptId === 'string' ? req.query.attemptId : null;
-  exam.finalizeExpired((a) => a.ip === ip || a.id === attemptId);
-  const used = exam.attemptsForIp(ip);
+  exam.finalizeExpired((a) => exam.matchesStudent(a, who) || a.id === attemptId);
+  const used = exam.attemptsForStudent(who);
   const settings = publicSettings();
-  const current = inProgressFor(ip, attemptId);
+  const current = inProgressFor(who, attemptId);
   res.json({
+    deviceId: who.deviceId,
     settings,
     attemptsUsed: used.length,
     attemptsLeft: Math.max(0, settings.maxAttempts - used.length),
@@ -85,11 +115,11 @@ app.get('/api/exam/status', (req, res) => {
 });
 
 app.post('/api/exam/start', (req, res) => {
-  const ip = clientIp(req);
+  const who = identify(req, res);
   const attemptId = typeof req.body.attemptId === 'string' ? req.body.attemptId : null;
-  exam.finalizeExpired((a) => a.ip === ip || a.id === attemptId);
+  exam.finalizeExpired((a) => exam.matchesStudent(a, who) || a.id === attemptId);
 
-  const current = inProgressFor(ip, attemptId);
+  const current = inProgressFor(who, attemptId);
   if (current) return res.json(exam.examPayload(store.readAttempt(current.id)));
 
   const name = String(req.body.name || '').replace(/\s+/g, ' ').trim();
@@ -97,11 +127,11 @@ app.post('/api/exam/start', (req, res) => {
   if (!/\p{L}/u.test(name)) return badRequest(res, 'Please enter a valid name.');
 
   const { maxAttempts } = store.data().settings;
-  if (exam.attemptsForIp(ip).length >= maxAttempts) {
-    return badRequest(res, `You have used all ${maxAttempts} attempt(s) allowed for this exam.`, 403);
+  if (exam.attemptsForStudent(who).length >= maxAttempts) {
+    return badRequest(res, `You have used all ${maxAttempts} attempt(s) allowed for this exam on this device.`, 403);
   }
   if (exam.effectiveQuestionCount() === 0) return badRequest(res, 'The exam is not available yet.', 503);
-  res.json(exam.examPayload(exam.startAttempt(ip, name)));
+  res.json(exam.examPayload(exam.startAttempt(who, name)));
 });
 
 function loadAttempt(req, res) {
@@ -240,16 +270,24 @@ admin.put('/settings', (req, res) => {
 
 admin.get('/attempts', (req, res) => {
   exam.finalizeExpired();
-  const attempts = [...store.data().attempts].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
+  const all = store.data().attempts;
+  // Flag devices used under more than one student name: a sign that one
+  // person is taking the exam for others, or retrying under a new name.
+  const attempts = all
+    .map((a) => {
+      const names = new Set(all.filter((b) => exam.matchesStudent(b, a)).map((b) => b.name.toLowerCase()));
+      return { ...a, sharedDeviceNames: names.size > 1 ? names.size : 0 };
+    })
+    .sort((a, b) => b.startedAt.localeCompare(a.startedAt));
   res.json(attempts);
 });
 
 admin.get('/attempts.csv', (req, res) => {
   exam.finalizeExpired();
   const cell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
-  const rows = [['Name', 'IP', 'Started', 'Submitted', 'Status', 'Score', 'Total', 'Percent', 'Grade', 'Passed', 'Certificate ID', 'Auto-submitted']];
+  const rows = [['Name', 'IP', 'Device ID', 'Started', 'Submitted', 'Status', 'Score', 'Total', 'Percent', 'Grade', 'Passed', 'Certificate ID', 'Auto-submitted']];
   for (const a of store.data().attempts) {
-    rows.push([a.name, a.ip, a.startedAt, a.submittedAt, a.status, a.score, a.total, a.percent, a.band, a.passed ? 'Yes' : a.status === 'submitted' ? 'No' : '', a.certificateId, a.autoSubmitted ? 'Yes' : '']);
+    rows.push([a.name, a.ip, a.deviceId, a.startedAt, a.submittedAt, a.status, a.score, a.total, a.percent, a.band, a.passed ? 'Yes' : a.status === 'submitted' ? 'No' : '', a.certificateId, a.autoSubmitted ? 'Yes' : '']);
   }
   res.set('Content-Type', 'text/csv; charset=utf-8');
   res.set('Content-Disposition', 'attachment; filename="networkversity-results.csv"');
@@ -259,8 +297,8 @@ admin.get('/attempts.csv', (req, res) => {
 admin.get('/attempts/:id', (req, res) => {
   const attempt = loadAttempt(req, res);
   if (!attempt) return;
-  if (attempt.status !== 'submitted') return res.json({ ...exam.resultPayload(attempt, { includeReview: false }), ip: attempt.ip });
-  res.json({ ...exam.resultPayload(attempt, { includeReview: true }), ip: attempt.ip });
+  if (attempt.status !== 'submitted') return res.json({ ...exam.resultPayload(attempt, { includeReview: false }), ip: attempt.ip, deviceId: attempt.deviceId });
+  res.json({ ...exam.resultPayload(attempt, { includeReview: true }), ip: attempt.ip, deviceId: attempt.deviceId });
 });
 
 // Deleting an attempt gives that IP the attempt back.
@@ -280,6 +318,17 @@ admin.post('/reset-ip', (req, res) => {
   const db = store.data();
   const removed = db.attempts.filter((a) => a.ip === ip);
   db.attempts = db.attempts.filter((a) => a.ip !== ip);
+  store.save();
+  removed.forEach((a) => store.deleteAttempt(a.id));
+  res.json({ ok: true, removed: removed.length });
+});
+
+admin.post('/reset-device', (req, res) => {
+  const deviceId = String(req.body.deviceId || '');
+  if (!deviceId) return badRequest(res, 'Device ID is required.');
+  const db = store.data();
+  const removed = db.attempts.filter((a) => a.deviceId === deviceId);
+  db.attempts = db.attempts.filter((a) => a.deviceId !== deviceId);
   store.save();
   removed.forEach((a) => store.deleteAttempt(a.id));
   res.json({ ok: true, removed: removed.length });

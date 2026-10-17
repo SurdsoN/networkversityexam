@@ -281,11 +281,13 @@
     const term = $('r-search').value.trim().toLowerCase();
     const body = $('r-body');
     body.innerHTML = '';
-    const shown = attempts.filter((a) => !term || a.name.toLowerCase().includes(term) || a.ip.includes(term));
+    const shown = attempts.filter(
+      (a) => !term || a.name.toLowerCase().includes(term) || a.ip.includes(term) || (a.deviceId || '').startsWith(term),
+    );
     if (!shown.length) {
       const tr = el('tr');
       const td = el('td', 'muted center', 'No exam attempts yet.');
-      td.colSpan = 7;
+      td.colSpan = 8;
       tr.appendChild(td);
       body.appendChild(tr);
     }
@@ -295,6 +297,7 @@
       tr.append(
         el('td', '', a.name),
         el('td', 'small', a.ip),
+        deviceCell(a),
         el('td', 'small', fmtDateTime(a.submittedAt || a.startedAt)),
         el('td', '', submitted ? `${a.score}/${a.total}` : '—'),
         el('td', '', submitted ? a.band : '—'),
@@ -314,14 +317,43 @@
       del.style.marginLeft = '6px';
       del.onclick = () => deleteAttempt(a);
       act.append(view, del);
+      if (a.deviceId) {
+        const reset = el('button', 'btn small secondary', 'Reset device');
+        reset.type = 'button';
+        reset.style.marginLeft = '6px';
+        reset.onclick = () => resetDevice(a);
+        act.appendChild(reset);
+      }
       tr.appendChild(act);
       body.appendChild(tr);
     }
   }
   $('r-search').addEventListener('input', renderResults);
 
+  function deviceCell(a) {
+    const td = el('td', 'small');
+    td.appendChild(el('span', '', a.deviceId ? a.deviceId.slice(0, 8) : '—'));
+    if (a.deviceId) td.title = a.deviceId;
+    if (a.sharedDeviceNames) {
+      td.appendChild(document.createElement('br'));
+      td.appendChild(el('span', 'tag derived', `⚠ used by ${a.sharedDeviceNames} names`));
+    }
+    return td;
+  }
+
+  async function resetDevice(a) {
+    if (!confirm(`Reset all attempts made on device ${a.deviceId.slice(0, 8)} (last used by ${a.name})?\n\nThat device can take the exam again. Its past results are deleted.`)) return;
+    try {
+      const r = await api('/api/admin/reset-device', 'POST', { deviceId: a.deviceId });
+      flash('success', `Removed ${r.removed} attempt(s) for that device.`);
+      loadResults();
+    } catch (err) {
+      flash('error', err.message);
+    }
+  }
+
   async function deleteAttempt(a) {
-    if (!confirm(`Delete ${a.name}'s attempt from ${fmtDateTime(a.startedAt)}?\n\nThis gives IP ${a.ip} one attempt back. The result and certificate record are removed.`)) return;
+    if (!confirm(`Delete ${a.name}'s attempt from ${fmtDateTime(a.startedAt)}?\n\nThis gives the student one attempt back. The result and certificate record are removed.`)) return;
     try {
       await api(`/api/admin/attempts/${a.id}`, 'DELETE');
       flash('success', 'Attempt deleted.');
@@ -351,7 +383,7 @@
       $('a-title').textContent = r.name;
       $('a-meta').textContent =
         r.status === 'submitted'
-          ? `IP ${r.ip} · started ${fmtDateTime(r.startedAt)} · submitted ${fmtDateTime(r.submittedAt)}${r.autoSubmitted ? ' (time ran out)' : ''} · ${r.score}/${r.total} · ${r.band}${r.certificateId ? ` · Certificate ${r.certificateId}` : ''}`
+          ? `IP ${r.ip} · device ${(r.deviceId || '—').slice(0, 8)} · started ${fmtDateTime(r.startedAt)} · submitted ${fmtDateTime(r.submittedAt)}${r.autoSubmitted ? ' (time ran out)' : ''} · ${r.score}/${r.total} · ${r.band}${r.certificateId ? ` · Certificate ${r.certificateId}` : ''}`
           : `IP ${r.ip} · started ${fmtDateTime(r.startedAt)} · still in progress`;
       $('a-cert').classList.toggle('hidden', !r.passed);
       if (r.passed) window.Certificate.draw($('a-cert-canvas'), certData(r)).catch(() => {});

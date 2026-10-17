@@ -13,8 +13,10 @@ const PORT = 3900 + Math.floor(Math.random() * 90);
 const BASE = `http://127.0.0.1:${PORT}`;
 let server;
 
-async function call(method, url, { body, ip = '10.0.0.1', cookie } = {}) {
+async function call(method, url, { body, ip = '10.0.0.1', cookie, device, fp } = {}) {
   const headers = { 'X-Forwarded-For': ip };
+  if (device) headers['X-Device-Id'] = device;
+  if (fp) headers['X-Device-Fp'] = fp;
   if (body) headers['Content-Type'] = 'application/json';
   if (cookie) headers.Cookie = cookie;
   const res = await fetch(BASE + url, { method, headers, body: body ? JSON.stringify(body) : undefined });
@@ -37,43 +39,62 @@ before(async () => {
 });
 after(() => server.kill());
 
+test('a device ID cookie is issued and echoed back', async () => {
+  const r = await call('GET', '/api/exam/status');
+  const cookie = r.headers.get('set-cookie');
+  assert.match(cookie, /nv_device=[0-9a-f-]{36}; HttpOnly/);
+  assert.ok(cookie.includes(r.body.deviceId));
+  const again = await call('GET', '/api/exam/status', { cookie: `nv_device=${r.body.deviceId}` });
+  assert.equal(again.body.deviceId, r.body.deviceId);
+  assert.equal(again.headers.get('set-cookie'), null);
+});
+
 test('name is required to start', async () => {
   const r = await call('POST', '/api/exam/start', { body: { name: ' ' } });
   assert.equal(r.status, 400);
 });
 
+const DEV_A = '11111111-1111-4111-8111-111111111111';
+const DEV_B = '22222222-2222-4222-8222-222222222222';
+const DEV_C = '33333333-3333-4333-8333-333333333333';
+
 test('start, resume, answer, submit, attempt limit', async () => {
   const ip = '10.0.0.2';
-  const s = await call('GET', '/api/exam/status', { ip });
+  const me = { ip, device: DEV_A, fp: 'aaaaaaaaaaaaaaaa' };
+  const s = await call('GET', '/api/exam/status', me);
   assert.equal(s.body.attemptsLeft, 2);
   assert.equal(s.body.settings.questionsPerExam, 100);
 
-  const start = await call('POST', '/api/exam/start', { ip, body: { name: 'Ada Lovelace' } });
+  const start = await call('POST', '/api/exam/start', { ...me, body: { name: 'Ada Lovelace' } });
   assert.equal(start.status, 200);
   assert.equal(start.body.questions.length, 100);
-  const resumed = await call('POST', '/api/exam/start', { ip, body: { name: 'Someone Else' } });
+  const resumed = await call('POST', '/api/exam/start', { ...me, body: { name: 'Someone Else' } });
   assert.equal(resumed.body.id, start.body.id, 'second start resumes the in-progress attempt');
 
   const id = start.body.id;
   assert.equal((await call('POST', `/api/exam/attempt/${id}/answer`, { body: { index: 0, answer: 0 } })).status, 200);
   assert.equal((await call('POST', `/api/exam/attempt/${id}/answer`, { body: { index: 0, answer: 1 } })).status, 409);
 
-  const sub = await call('POST', `/api/exam/attempt/${id}/submit`, { ip, body: { answers: [] } });
+  const sub = await call('POST', `/api/exam/attempt/${id}/submit`, { ...me, body: { answers: [] } });
   assert.equal(sub.body.status, 'submitted');
   assert.equal(sub.body.review.length, 100);
   assert.equal(sub.body.name, 'Ada Lovelace');
 
   // second attempt allowed, third blocked
-  const second = await call('POST', '/api/exam/start', { ip, body: { name: 'Ada Lovelace' } });
-  await call('POST', `/api/exam/attempt/${second.body.id}/submit`, { ip, body: {} });
-  const third = await call('POST', '/api/exam/start', { ip, body: { name: 'Ada Lovelace' } });
+  const second = await call('POST', '/api/exam/start', { ...me, body: { name: 'Ada Lovelace' } });
+  await call('POST', `/api/exam/attempt/${second.body.id}/submit`, { ...me, body: {} });
+  const third = await call('POST', '/api/exam/start', { ...me, body: { name: 'Ada Lovelace' } });
   assert.equal(third.status, 403);
-  const after = await call('GET', '/api/exam/status', { ip });
+  const after = await call('GET', '/api/exam/status', me);
   assert.equal(after.body.attemptsLeft, 0);
   assert.equal(after.body.history.length, 2);
 
-  // another IP is unaffected
-  assert.equal((await call('GET', '/api/exam/status', { ip: '10.0.0.3' })).body.attemptsLeft, 2);
+  // the same device on another network is still blocked
+  assert.equal((await call('GET', '/api/exam/status', { ...me, ip: '10.9.9.9' })).body.attemptsLeft, 0);
+  // the same phone with its storage cleared, on the same network, is still blocked
+  assert.equal((await call('GET', '/api/exam/status', { ...me, device: DEV_C })).body.attemptsLeft, 0);
+  // another phone sharing the same public IP is unaffected
+  assert.equal((await call('GET', '/api/exam/status', { ip, device: DEV_B, fp: 'bbbbbbbbbbbbbbbb' })).body.attemptsLeft, 2);
 });
 
 test('admin endpoints require login and manage the bank', async () => {
@@ -107,6 +128,7 @@ test('admin endpoints require login and manage the bank', async () => {
   assert.ok(attempts.body.length >= 2);
   const reset = await call('POST', '/api/admin/reset-ip', { cookie, body: { ip: '10.0.0.2' } });
   assert.equal(reset.body.removed, 2);
+  assert.equal((await call('POST', '/api/admin/reset-device', { cookie, body: { deviceId: DEV_A } })).status, 200);
   const csv = await call('GET', '/api/admin/attempts.csv', { cookie });
   assert.match(csv.body, /"Name","IP"/);
 });
