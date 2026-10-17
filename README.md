@@ -32,7 +32,7 @@ Admins manage the question bank and see results from a password-protected panel.
 Vercel runs the app as serverless functions, which can't keep files, so the data lives in a Postgres database. Vercel's Neon integration has a free tier.
 
 1. **Import the repo.** In Vercel, choose **Add New → Project**, pick `networkversityexam`, and keep **Framework Preset: Other**. There's no build command; `vercel.json` already sets everything up.
-2. **Add a database.** Open the project's **Storage** tab, choose **Create Database → Neon (Postgres)**, and connect it to the project. This adds `DATABASE_URL` / `POSTGRES_URL` automatically.
+2. **Add a database.** Open the project's **Storage** tab, choose **Create Database → Neon (Postgres)**, and connect it to the project. Tick **Production** and **Preview**, and leave **Custom Prefix** empty. This adds `DATABASE_URL` / `POSTGRES_URL` automatically. A prefix such as `STORAGE` (giving `STORAGE_URL`) also works.
 3. **Set the admin password.** Under **Settings → Environment Variables**, add `ADMIN_PASSWORD` with a strong password. Optionally add `ADMIN_USERNAME`, which defaults to `admin`.
 4. **Redeploy** under **Deployments → ⋯ → Redeploy**, so the new variables take effect.
 5. Open `https://<your-project>.vercel.app/admin` and log in with `admin` and your password.
