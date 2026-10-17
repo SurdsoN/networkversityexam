@@ -357,7 +357,7 @@ app.use((err, req, res, next) => {
 // (On Vercel the public/ folder is served directly and only /api reaches
 // this app; see vercel.json.)
 
-app.get('/admin', (req, res) => res.sendFile(path.join(ROOT, 'public', 'admin.html')));
+app.get('/admin', (req, res) => res.sendFile(path.join(ROOT, 'public', 'admin', 'index.html')));
 app.use(express.static(path.join(ROOT, 'public'), { extensions: ['html'] }));
 
 export default app;

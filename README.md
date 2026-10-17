@@ -115,7 +115,7 @@ lib/exam.js             Question draw, answer saving, grading, grade bands
 lib/auth.js             Admin password hashing, signed session cookies, login rate limit
 data/questions.seed.json  Initial question bank
 public/index.html       Student exam (start → exam → result/certificate)
-public/admin.html       Admin panel
+public/admin/index.html Admin panel (served at /admin)
 public/js/certificate.js  Draws the certificate on a canvas, exports PNG/PDF
 public/js/device.js     Device ID + browser fingerprint for the attempt limit
 public/vendor/          jsPDF 4.2.1 (MIT), used for certificate PDFs
