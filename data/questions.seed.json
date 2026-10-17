@@ -1,0 +1,1254 @@
+[
+  {
+    "id": "q001",
+    "type": "tf",
+    "text": "Point Value (PV) is assigned to each product and is used to qualify for bonuses, recognition, achievements and incentives.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q002",
+    "type": "tf",
+    "text": "Personal Point Value (PPV) represents the total point value on all products you have purchased during the month.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q003",
+    "type": "tf",
+    "text": "Group Point Value (GPV) is your PV plus the QPV of all qualified directors in your first three levels.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q004",
+    "type": "tf",
+    "text": "A Qualified Director must have a director title and accumulate at least 4000 PV.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q005",
+    "type": "tf",
+    "text": "Qualified Directors earn 25% of the Charge Sale Volume Bonus.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q006",
+    "type": "tf",
+    "text": "To become a Manager, you need your own personal PV and you are eligible to earn a Sale Volume Bonus.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q007",
+    "type": "tf",
+    "text": "Leadership Development Bonus (LDB) is earned when you achieve the director title and produce a director in your team.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q008",
+    "type": "tf",
+    "text": "Network Development Bonus (NDB) is earned when you achieve your personal goal.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q009",
+    "type": "tf",
+    "text": "Neolife distributors are eligible to earn incentives including personal recognition gifts and travel rewards based on performance.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q010",
+    "type": "tf",
+    "text": "Neolife was founded by a man named Jerry Brassfield in 1958.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q011",
+    "type": "tf",
+    "text": "Neolife came to Nigeria in the year 2001.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q012",
+    "type": "tf",
+    "text": "Wealth is defined as having an abundance of valuable resources or assets.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q013",
+    "type": "tf",
+    "text": "A Full Distributor stage requires 250–499 PV and earns 3% bonus.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q014",
+    "type": "tf",
+    "text": "A Manager stage requires 500–799 PV and earns 5% bonus.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q015",
+    "type": "tf",
+    "text": "Senior Manager stage requires 1000–1799 PV and earns 10% bonus.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q016",
+    "type": "tf",
+    "text": "Executive Manager stage requires 2000–2799 PV and earns 15–20% bonus.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q017",
+    "type": "tf",
+    "text": "Director stage requires 4000+ PV and earns 25% bonus.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q018",
+    "type": "tf",
+    "text": "Emerald Director requires 4000–10,000 PV.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q019",
+    "type": "tf",
+    "text": "Sapphire Director requires 10,000–19,999 PV.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q020",
+    "type": "tf",
+    "text": "NeoLife does not rely on traditional paid advertising; instead it rewards distributors for spreading the word.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q021",
+    "type": "tf",
+    "text": "Your unique NeoLife ID number is valid for 160 years.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q022",
+    "type": "tf",
+    "text": "The three core activities NeoLife expects from distributors are: Use the Products, Share the Products, and Share the Opportunity.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q023",
+    "type": "tf",
+    "text": "The Financial Status Ladder has five levels: Financial Crisis, Financial Instability, Financial Stability, Financial Independence, and Financial Freedom.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q024",
+    "type": "tf",
+    "text": "Duplication (training one person who then trains others) is presented as a key strategy for growing business.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q025",
+    "type": "mc",
+    "text": "What does PV stand for in the Neolife Compensation Plan?",
+    "options": [
+      "Price Value",
+      "Point Value",
+      "Personal Vow",
+      "Premium Value"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q026",
+    "type": "mc",
+    "text": "What is PPV in the Neolife system?",
+    "options": [
+      "Product Purchase Value",
+      "Personal Point Value",
+      "Percentage Pay Value",
+      "Premium Point Volume"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q027",
+    "type": "mc",
+    "text": "What is GPV?",
+    "options": [
+      "Government Paid Value",
+      "Group Point Value",
+      "General Product Valuation",
+      "Gross Profit Volume"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q028",
+    "type": "mc",
+    "text": "GPV is calculated as your PV plus the QPV of all qualified directors in your first how many levels?",
+    "options": [
+      "2 levels",
+      "3 levels",
+      "5 levels",
+      "4 levels"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q029",
+    "type": "mc",
+    "text": "What is BV (Bonus Value)?",
+    "options": [
+      "A fixed percentage of all sales",
+      "A currency value assigned to each product used to calculate bonuses",
+      "The total commission earned per month",
+      "A reward for recruiting new members"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q030",
+    "type": "mc",
+    "text": "What is Retail Price (RP)?",
+    "options": [
+      "The price Neolife charges distributors",
+      "The recommended price to use when selling to retail customers",
+      "The discounted price for loyal members",
+      "The international export price"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q031",
+    "type": "mc",
+    "text": "What is Distributor Price (DP)?",
+    "options": [
+      "The price for retail customers",
+      "The wholesale price of Neolife products for registered distributors",
+      "The bonus-included price for managers",
+      "The cost of the starter kit"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q032",
+    "type": "mc",
+    "text": "Who can purchase products at Distributor Price?",
+    "options": [
+      "Only Directors",
+      "All registered distributors",
+      "Retail customers only",
+      "Senior Managers and above"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q033",
+    "type": "mc",
+    "text": "In addition to the compensation plan, Neolife benefit distributors through which of the following?",
+    "options": [
+      "Free products every month",
+      "Regular incentives, personal recognition gifts and travel rewards",
+      "Free car programme",
+      "Housing allowance"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q034",
+    "type": "mc",
+    "text": "What is the minimum PV for a Qualified Director?",
+    "options": [
+      "250 PV",
+      "4000 PV",
+      "500 PV",
+      "1000 PV"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q035",
+    "type": "mc",
+    "text": "A Qualified Director earns what percentage of the Charge Sale Volume Bonus?",
+    "options": [
+      "5%",
+      "15%",
+      "25%",
+      "10%"
+    ],
+    "answer": 2,
+    "source": "original"
+  },
+  {
+    "id": "q036",
+    "type": "mc",
+    "text": "Neolife was founded in which year?",
+    "options": [
+      "1968",
+      "1950",
+      "1958",
+      "1975"
+    ],
+    "answer": 2,
+    "source": "original"
+  },
+  {
+    "id": "q037",
+    "type": "mc",
+    "text": "Who founded Neolife?",
+    "options": [
+      "Kendra Brassfield",
+      "Jerry Brassfield",
+      "Abdurasheed Abdullahi",
+      "Mr. Solu"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q038",
+    "type": "mc",
+    "text": "In what year did Neolife come to Nigeria?",
+    "options": [
+      "1998",
+      "2005",
+      "2001",
+      "2010"
+    ],
+    "answer": 2,
+    "source": "original"
+  },
+  {
+    "id": "q039",
+    "type": "mc",
+    "text": "What is Wealth defined as?",
+    "options": [
+      "Having a lot of money",
+      "Having an abundance of valuable resources or assets",
+      "Owning a big house",
+      "Being a Director in Neolife"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q040",
+    "type": "mc",
+    "text": "What bonus percentage do Full Distributors earn?",
+    "options": [
+      "5%",
+      "10%",
+      "1%",
+      "3%"
+    ],
+    "answer": 3,
+    "source": "original"
+  },
+  {
+    "id": "q041",
+    "type": "mc",
+    "text": "What bonus percentage does a Director earn?",
+    "options": [
+      "15%",
+      "20%",
+      "25%",
+      "30%"
+    ],
+    "answer": 2,
+    "source": "original"
+  },
+  {
+    "id": "q042",
+    "type": "mc",
+    "text": "Emerald Director PV range is:",
+    "options": [
+      "2000–4000 PV",
+      "4000–10,000 PV",
+      "10,000–19,999 PV",
+      "20,000+ PV"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q043",
+    "type": "mc",
+    "text": "Sapphire Director PV range is:",
+    "options": [
+      "4000–9999 PV",
+      "10,000–19,999 PV",
+      "20,000–29,999 PV",
+      "5000–9999 PV"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q044",
+    "type": "mc",
+    "text": "Which of the following is NOT listed among the 31 welcome documents?",
+    "options": [
+      "Congratulatory letter",
+      "Compensation letter",
+      "Product catalog",
+      "Bank statement"
+    ],
+    "answer": 3,
+    "source": "original"
+  },
+  {
+    "id": "q045",
+    "type": "mc",
+    "text": "PV values for each product can be found in which document?",
+    "options": [
+      "The retail price list",
+      "The confidential price list",
+      "The policy and procedure",
+      "The getting started kit"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q046",
+    "type": "mc",
+    "text": "What does LDB stand for?",
+    "options": [
+      "Long-term Distributor Benefit",
+      "Leadership Development Bonus",
+      "Loyal Distributor Bonus",
+      "Level Distribution Benefit"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q047",
+    "type": "mc",
+    "text": "What does CAB stand for in Neolife bonuses?",
+    "options": [
+      "Certified Achiever Bonus",
+      "Consistency Achievement Bonus",
+      "Compulsory Advancement Bonus",
+      "Career Advancement Benefit"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q048",
+    "type": "mc",
+    "text": "What does TI stand for in Neolife bonus types?",
+    "options": [
+      "Team Incentive",
+      "Travel Incentive",
+      "Total Income",
+      "Temporary Income"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q049",
+    "type": "mc",
+    "text": "What does DDB stand for?",
+    "options": [
+      "Direct Distributor Bonus",
+      "Diamond Development Bonus",
+      "Downline Distributor Benefit",
+      "Director Distribution Bonus"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q050",
+    "type": "mc",
+    "text": "The Neolife status levels, in order from lowest to highest, begin with:",
+    "options": [
+      "Manager, Director, Distributor",
+      "Distributor, Manager, Senior Manager",
+      "Senior Manager, Manager, Distributor",
+      "Director, Distributor, Manager"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q051",
+    "type": "mc",
+    "text": "When you first register as a Neolife distributor, you become eligible for which items?",
+    "options": [
+      "ID Card, ID number, product catalog, cheque, website",
+      "Only a congratulatory letter",
+      "Just the product kit",
+      "Only the compensation letter"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q052",
+    "type": "mc",
+    "text": "The FHG stands for which global network?",
+    "options": [
+      "Faithful Health Group",
+      "Faithheroric Global",
+      "First Health Group",
+      "Faith Hope Group"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q053",
+    "type": "mc",
+    "text": "According to the compensation plan notes, as price goes up over time, what also goes up?",
+    "options": [
+      "BV only",
+      "Your income",
+      "The number of downlines",
+      "PV values"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q054",
+    "type": "mc",
+    "text": "QPV is used to determine which of the following?",
+    "options": [
+      "Your bonus percentage from Sales Volume",
+      "Your rank only",
+      "Your travel reward",
+      "Your starter kit eligibility"
+    ],
+    "answer": 0,
+    "source": "original"
+  },
+  {
+    "id": "q055",
+    "type": "mc",
+    "text": "What is a 'downline' in network marketing?",
+    "options": [
+      "A distributor who joined before you",
+      "People you have sponsored and their recruits below you",
+      "Your upline's organization",
+      "The Neolife head office"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q056",
+    "type": "mc",
+    "text": "Which document in the Neolife welcome package shows you how to get started?",
+    "options": [
+      "Compensation letter",
+      "Getting started kit / guide",
+      "Policy & Procedure",
+      "Retail price list"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q057",
+    "type": "mc",
+    "text": "What percentage of NeoLife’s reward path is allocated to “Share the Opportunity”?",
+    "options": [
+      "10%",
+      "20%",
+      "50%",
+      "80%"
+    ],
+    "answer": 3,
+    "source": "original"
+  },
+  {
+    "id": "q058",
+    "type": "mc",
+    "text": "Which of the following is listed as a core NeoLife health product that supports cellular energy and nutrient absorption?",
+    "options": [
+      "Super Gro",
+      "Tre-en-en",
+      "Salmon Oil Plus",
+      "Formula IV only"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q059",
+    "type": "mc",
+    "text": "Which bonus is specifically mentioned for helping others reach Director level?",
+    "options": [
+      "CAB",
+      "LDB (Leadership Development Bonus)",
+      "TI",
+      "Retail Profit"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q060",
+    "type": "mc",
+    "text": "According to the course, what is the main purpose of the FHG pathway?",
+    "options": [
+      "To replace NeoLife products",
+      "To help people overcome startup capital limitations through skills and freelancing",
+      "To provide free products every month",
+      "To replace the compensation plan"
+    ],
+    "answer": 1,
+    "source": "original"
+  },
+  {
+    "id": "q061",
+    "type": "mc",
+    "text": "In the rank ladder shown on the course, Senior Manager requires approximately:",
+    "options": [
+      "250 GPV",
+      "500 GPV",
+      "1,000 GPV",
+      "4,000 GPV"
+    ],
+    "answer": 2,
+    "source": "original"
+  },
+  {
+    "id": "q062",
+    "type": "tf",
+    "text": "Neolife came to Nigeria in the year 1998.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q063",
+    "type": "tf",
+    "text": "Neolife was founded by Jerry Brassfield in 1975.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q064",
+    "type": "tf",
+    "text": "A Full Distributor earns a 10% bonus.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q065",
+    "type": "tf",
+    "text": "A Manager earns a 3% bonus.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q066",
+    "type": "tf",
+    "text": "A Director earns a 15% bonus.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q067",
+    "type": "tf",
+    "text": "Sapphire Director requires 20,000 PV or more.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q068",
+    "type": "tf",
+    "text": "Distributor Price (DP) is the recommended price to use when selling to retail customers.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q069",
+    "type": "tf",
+    "text": "Retail Price (RP) is the recommended price to use when selling to retail customers.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q070",
+    "type": "tf",
+    "text": "Distributor Price (DP) is the wholesale price of Neolife products for registered distributors.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q071",
+    "type": "tf",
+    "text": "Only Directors can purchase products at Distributor Price.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q072",
+    "type": "tf",
+    "text": "PV values for each product can be found in the confidential price list.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q073",
+    "type": "tf",
+    "text": "BV (Bonus Value) is a currency value assigned to each product and is used to calculate bonuses.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q074",
+    "type": "tf",
+    "text": "GPV includes the QPV of qualified directors in your first five levels.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q075",
+    "type": "tf",
+    "text": "QPV is used to determine your bonus percentage from Sales Volume.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q076",
+    "type": "tf",
+    "text": "In network marketing, a 'downline' is a distributor who joined before you.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q077",
+    "type": "tf",
+    "text": "The Getting Started kit / guide is the welcome document that shows you how to get started.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q078",
+    "type": "tf",
+    "text": "A bank statement is one of the welcome documents given to a new distributor.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q079",
+    "type": "tf",
+    "text": "NeoLife relies mainly on traditional paid advertising to market its products.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q080",
+    "type": "tf",
+    "text": "Your unique NeoLife ID number is valid for 60 years.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q081",
+    "type": "tf",
+    "text": "“Share the Opportunity” accounts for 80% of NeoLife’s reward path.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q082",
+    "type": "tf",
+    "text": "Financial Freedom is the highest level on the Financial Status Ladder.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q083",
+    "type": "tf",
+    "text": "Tre-en-en is presented as a core NeoLife health product that supports cellular energy and nutrient absorption.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q084",
+    "type": "tf",
+    "text": "The main purpose of the FHG pathway is to help people overcome startup capital limitations through skills and freelancing.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q085",
+    "type": "tf",
+    "text": "According to the compensation plan notes, as price goes up over time, your income also goes up.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q086",
+    "type": "tf",
+    "text": "When you first register as a Neolife distributor, you become eligible for an ID card, ID number, product catalog, cheque and website.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q087",
+    "type": "tf",
+    "text": "In the Neolife status levels, Manager comes before Distributor.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q088",
+    "type": "mc",
+    "text": "What PV range is required for the Manager stage?",
+    "options": [
+      "250–499 PV",
+      "500–799 PV",
+      "1000–1799 PV",
+      "2000–2799 PV"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q089",
+    "type": "mc",
+    "text": "What bonus percentage does a Manager earn?",
+    "options": [
+      "3%",
+      "5%",
+      "10%",
+      "25%"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q090",
+    "type": "mc",
+    "text": "What PV range is required for the Senior Manager stage?",
+    "options": [
+      "500–799 PV",
+      "1000–1799 PV",
+      "2000–2799 PV",
+      "4000+ PV"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q091",
+    "type": "mc",
+    "text": "What bonus percentage does a Senior Manager earn?",
+    "options": [
+      "5%",
+      "10%",
+      "15–20%",
+      "25%"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q092",
+    "type": "mc",
+    "text": "What PV range is required for the Executive Manager stage?",
+    "options": [
+      "1000–1799 PV",
+      "2000–2799 PV",
+      "4000–10,000 PV",
+      "10,000–19,999 PV"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q093",
+    "type": "mc",
+    "text": "What bonus percentage does an Executive Manager earn?",
+    "options": [
+      "5%",
+      "10%",
+      "15–20%",
+      "25%"
+    ],
+    "answer": 2,
+    "source": "derived"
+  },
+  {
+    "id": "q094",
+    "type": "mc",
+    "text": "What PV range is required for the Full Distributor stage?",
+    "options": [
+      "100–249 PV",
+      "250–499 PV",
+      "500–799 PV",
+      "1000–1799 PV"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q095",
+    "type": "mc",
+    "text": "What does NDB stand for?",
+    "options": [
+      "National Distributor Bonus",
+      "Network Development Bonus",
+      "New Downline Bonus",
+      "Neolife Director Benefit"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q096",
+    "type": "mc",
+    "text": "When is the Leadership Development Bonus (LDB) earned?",
+    "options": [
+      "When you register as a distributor",
+      "When you achieve the director title and produce a director in your team",
+      "When you achieve your personal goal",
+      "When you buy the starter kit"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q097",
+    "type": "mc",
+    "text": "Which are the three core activities NeoLife expects from distributors?",
+    "options": [
+      "Use the Products, Share the Products, Share the Opportunity",
+      "Buy, Sell, Advertise",
+      "Register, Recruit, Retire",
+      "Advertise, Discount, Deliver"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q098",
+    "type": "mc",
+    "text": "Which is the lowest level of the Financial Status Ladder?",
+    "options": [
+      "Financial Crisis",
+      "Financial Instability",
+      "Financial Stability",
+      "Financial Independence"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q099",
+    "type": "mc",
+    "text": "How long is your unique NeoLife ID number valid?",
+    "options": [
+      "10 years",
+      "60 years",
+      "100 years",
+      "160 years"
+    ],
+    "answer": 3,
+    "source": "derived"
+  },
+  {
+    "id": "q100",
+    "type": "mc",
+    "text": "In the course, what does \"duplication\" mean?",
+    "options": [
+      "Buying the same product twice",
+      "Training one person who then trains others",
+      "Registering two accounts",
+      "Copying another distributor’s website"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q101",
+    "type": "mc",
+    "text": "Instead of relying on traditional paid advertising, NeoLife:",
+    "options": [
+      "Uses television adverts only",
+      "Rewards distributors for spreading the word",
+      "Gives products away for free",
+      "Sells only through supermarkets"
+    ],
+    "answer": 1,
+    "source": "derived"
+  },
+  {
+    "id": "q102",
+    "type": "mc",
+    "text": "What does Personal Point Value (PPV) represent?",
+    "options": [
+      "The total point value on all products you have purchased during the month",
+      "The value of your downline’s purchases only",
+      "Your yearly income",
+      "The price of the starter kit"
+    ],
+    "answer": 0,
+    "source": "derived"
+  },
+  {
+    "id": "q103",
+    "type": "mc",
+    "text": "Which of these is NOT one of the five levels of the Financial Status Ladder?",
+    "options": [
+      "Financial Crisis",
+      "Financial Stability",
+      "Financial Bankruptcy",
+      "Financial Freedom"
+    ],
+    "answer": 2,
+    "source": "derived"
+  },
+  {
+    "id": "q104",
+    "type": "mc",
+    "text": "What PV range is required for the Director stage?",
+    "options": [
+      "1000+ PV",
+      "2000+ PV",
+      "4000+ PV",
+      "10,000+ PV"
+    ],
+    "answer": 2,
+    "source": "derived"
+  }
+]

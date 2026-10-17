@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Exam Admin | Networkversity</title>
+  <link rel="icon" href="/img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<section id="login-view" class="wrap hidden" style="max-width:420px">
+  <header class="brand">
+    <img src="/img/logo.png" alt="FHG Concept logo">
+    <div><div class="t1">Networkversity</div><div class="t2">Exam administration</div></div>
+  </header>
+  <div class="card">
+    <h1>Admin login</h1>
+    <div id="login-alert"></div>
+    <form id="login-form">
+      <div class="field"><label for="username">Username</label><input type="text" id="username" autocomplete="username" required></div>
+      <div class="field"><label for="password">Password</label><input type="password" id="password" autocomplete="current-password" required></div>
+      <button class="btn block" type="submit">Log in</button>
+    </form>
+  </div>
+</section>
+
+<section id="app-view" class="wrap wide hidden">
+  <header class="brand" style="justify-content:space-between">
+    <div style="display:flex;gap:12px;align-items:center">
+      <img src="/img/logo.png" alt="FHG Concept logo">
+      <div><div class="t1">Networkversity Exam</div><div class="t2">Admin · <span id="admin-user"></span></div></div>
+    </div>
+    <button class="btn small secondary" id="logout-btn" type="button">Log out</button>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="questions" class="active" type="button">Question bank</button>
+    <button data-tab="results" type="button">Results</button>
+    <button data-tab="settings" type="button">Exam settings</button>
+    <button data-tab="account" type="button">Account</button>
+  </nav>
+  <div id="app-alert"></div>
+
+  <!-- Questions -->
+  <div data-panel="questions">
+    <div class="alert info small" id="bank-summary"></div>
+    <div class="toolbar">
+      <input type="text" id="q-search" placeholder="Search questions…">
+      <select id="q-filter">
+        <option value="all">All types</option>
+        <option value="tf">True / False</option>
+        <option value="mc">Multiple choice</option>
+        <option value="derived">Needs review (derived)</option>
+      </select>
+      <button class="btn" id="add-q-btn" type="button">+ Add question</button>
+    </div>
+    <div id="q-list"></div>
+  </div>
+
+  <!-- Results -->
+  <div data-panel="results" class="hidden">
+    <div class="stats" id="stats"></div>
+    <div class="toolbar">
+      <input type="text" id="r-search" placeholder="Search by name or IP…">
+      <a class="btn secondary" href="/api/admin/attempts.csv">Export CSV</a>
+      <button class="btn secondary" id="reset-ip-btn" type="button">Reset attempts for an IP</button>
+    </div>
+    <div class="card table-wrap" style="padding:8px 12px">
+      <table class="data">
+        <thead><tr><th>Student</th><th>IP address</th><th>Date</th><th>Score</th><th>Grade</th><th>Status</th><th></th></tr></thead>
+        <tbody id="r-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div data-panel="settings" class="hidden">
+    <form class="card" id="settings-form">
+      <div class="field">
+        <label for="s-count">Questions per exam</label>
+        <input type="number" id="s-count" min="1" max="500" required>
+        <p class="small muted" id="s-count-note" style="margin:6px 0 0"></p>
+      </div>
+      <div class="field"><label for="s-time">Time limit (minutes)</label><input type="number" id="s-time" min="1" max="600" required></div>
+      <div class="field"><label for="s-attempts">Maximum attempts per student (IP address)</label><input type="number" id="s-attempts" min="1" max="20" required></div>
+      <div class="field">
+        <label for="s-pass">Pass mark (points out of 100) — certificate is issued at or above this</label>
+        <input type="number" id="s-pass" min="1" max="100" required>
+      </div>
+      <div class="field">
+        <label for="s-nav">Navigation</label>
+        <select id="s-nav">
+          <option value="linear">One question at a time — cannot go back</option>
+          <option value="free">Free navigation with progress bar and question grid</option>
+        </select>
+      </div>
+      <div class="field"><label class="check"><input type="checkbox" id="s-show"> Show correct answers to students after they submit</label></div>
+      <p class="small muted">Changes apply to exams started after you save. Exams already in progress keep their original rules.</p>
+      <button class="btn" type="submit">Save settings</button>
+    </form>
+  </div>
+
+  <!-- Account -->
+  <div data-panel="account" class="hidden">
+    <form class="card" id="password-form" style="max-width:480px">
+      <h2>Change password</h2>
+      <div class="field"><label for="pw-current">Current password</label><input type="password" id="pw-current" autocomplete="current-password" required></div>
+      <div class="field"><label for="pw-new">New password (min. 8 characters)</label><input type="password" id="pw-new" autocomplete="new-password" minlength="8" required></div>
+      <div class="field"><label for="pw-confirm">Confirm new password</label><input type="password" id="pw-confirm" autocomplete="new-password" minlength="8" required></div>
+      <button class="btn" type="submit">Update password</button>
+    </form>
+  </div>
+</section>
+
+<!-- Question editor -->
+<div class="modal-backdrop hidden" id="q-modal" role="dialog" aria-modal="true" aria-labelledby="q-modal-title">
+  <form class="modal" id="q-form" style="max-width:600px;max-height:92vh;overflow:auto">
+    <h2 id="q-modal-title">Add question</h2>
+    <div id="q-form-alert"></div>
+    <div class="field">
+      <label for="qf-type">Question type</label>
+      <select id="qf-type">
+        <option value="mc">Multiple choice (single answer)</option>
+        <option value="tf">True / False</option>
+      </select>
+    </div>
+    <div class="field"><label for="qf-text">Question</label><textarea id="qf-text" required maxlength="1000"></textarea></div>
+    <div class="field" id="qf-tf">
+      <label>Correct answer</label>
+      <label class="check"><input type="radio" name="qf-tf" value="0"> True</label>
+      <label class="check"><input type="radio" name="qf-tf" value="1"> False</label>
+    </div>
+    <div class="field" id="qf-mc">
+      <label>Options — select the correct one</label>
+      <div id="qf-options"></div>
+      <button class="btn small secondary" id="qf-add-opt" type="button">+ Add option</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn secondary" type="button" id="qf-cancel">Cancel</button>
+      <button class="btn" type="submit">Save question</button>
+    </div>
+  </form>
+</div>
+
+<!-- Attempt detail -->
+<div class="modal-backdrop hidden" id="a-modal" role="dialog" aria-modal="true">
+  <div class="modal" style="max-width:680px;max-height:92vh;overflow:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <h2 id="a-title" style="margin:0"></h2>
+      <button class="btn small secondary" id="a-close" type="button">Close</button>
+    </div>
+    <p class="small muted" id="a-meta"></p>
+    <div id="a-cert" class="hidden" style="margin-bottom:12px">
+      <canvas id="a-cert-canvas" class="cert-preview"></canvas>
+      <button class="btn small green" id="a-cert-dl" type="button">Download certificate (PDF)</button>
+    </div>
+    <div id="a-review"></div>
+  </div>
+</div>
+
+<script src="/vendor/jspdf.umd.min.js" defer></script>
+<script src="/js/certificate.js" defer></script>
+<script src="/js/admin.js" defer></script>
+</body>
+</html>

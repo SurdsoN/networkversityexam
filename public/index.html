@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Networkversity Final Exam | FHG Concept</title>
+  <meta name="description" content="Final exam for the FHG Concept Networkversity course.">
+  <meta name="theme-color" content="#3f7fd8">
+  <link rel="icon" href="/img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- Start / welcome -->
+<section id="view-start" class="wrap hidden">
+  <header class="brand">
+    <img src="/img/logo.png" alt="FHG Concept logo">
+    <div><div class="t1">Networkversity</div><div class="t2">FHG Concept · Final Exam</div></div>
+  </header>
+
+  <div class="card">
+    <h1>Networkversity Final Exam</h1>
+    <p class="muted">Test what you learned in the Networkversity course and earn your Certificate of Completion.</p>
+    <ul class="rules" id="rules"></ul>
+    <h2 class="small" style="margin-bottom:4px">Grading</h2>
+    <div class="grades">
+      <div><b>Excellent</b>81 – 100</div>
+      <div><b>Very Good</b>71 – 80</div>
+      <div><b>Good</b>61 – 70</div>
+      <div><b>Pass</b>51 – 60</div>
+      <div><b>Fair</b>41 – 50</div>
+      <div><b>Fail</b>0 – 40</div>
+    </div>
+  </div>
+
+  <div class="card" id="start-card">
+    <div id="start-alert"></div>
+    <form id="start-form" novalidate>
+      <div class="field">
+        <label for="student-name">Your full name</label>
+        <input type="text" id="student-name" autocomplete="name" maxlength="80" placeholder="e.g. Adaeze Okafor" required>
+        <p class="small muted" style="margin:6px 0 0">This name will be printed on your certificate exactly as typed.</p>
+      </div>
+      <button class="btn block green" id="start-btn" type="submit">Start exam</button>
+    </form>
+    <div id="resume-box" class="hidden">
+      <div class="alert info">You have an exam in progress<span id="resume-name"></span>. The timer has kept running.</div>
+      <button class="btn block green" id="resume-btn" type="button">Resume exam</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="history-card">
+    <h2>Your previous attempts</h2>
+    <table class="history"><tbody id="history-body"></tbody></table>
+  </div>
+</section>
+
+<!-- Exam -->
+<section id="view-exam" class="hidden">
+  <div class="exam-bar">
+    <div class="inner">
+      <div class="row">
+        <div><b id="q-counter">Question 1 of 100</b><div class="small muted" id="answered-count"></div></div>
+        <div class="timer" id="timer" aria-live="off">45:00</div>
+      </div>
+      <div class="progress" role="progressbar" aria-label="Exam progress"><div id="progress-fill"></div></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div id="exam-alert"></div>
+    <div class="card">
+      <div class="q-meta"><span id="q-number"></span><span class="tag" id="q-type"></span></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="q-options" role="radiogroup"></div>
+    </div>
+    <div class="btn-row" id="linear-controls">
+      <button class="btn block" id="next-btn" type="button" disabled>Next question →</button>
+    </div>
+    <p class="small muted center hidden" id="linear-note" style="margin-top:10px">You cannot go back after moving to the next question.</p>
+    <div id="free-controls" class="hidden">
+      <div class="btn-row" style="margin-bottom:16px">
+        <button class="btn secondary" id="prev-btn" type="button">← Previous</button>
+        <button class="btn" id="free-next-btn" type="button">Next →</button>
+      </div>
+      <div class="card">
+        <h2 class="small">Jump to question</h2>
+        <div class="nav-grid" id="nav-grid"></div>
+      </div>
+      <button class="btn block green" id="free-submit-btn" type="button">Submit exam</button>
+    </div>
+  </div>
+</section>
+
+<!-- Result -->
+<section id="view-result" class="wrap hidden">
+  <header class="brand">
+    <img src="/img/logo.png" alt="FHG Concept logo">
+    <div><div class="t1">Networkversity</div><div class="t2">FHG Concept · Exam Result</div></div>
+  </header>
+  <div id="result-alert"></div>
+  <div class="card">
+    <div class="score-ring">
+      <div class="small muted" id="result-name"></div>
+      <div class="big" id="result-score">0</div>
+      <div class="of" id="result-of">out of 100 points</div>
+      <div class="band" id="result-band"></div>
+    </div>
+    <p class="center muted small" id="result-message" style="margin-top:12px"></p>
+  </div>
+
+  <div class="card hidden" id="cert-card">
+    <h2>🎓 Your certificate</h2>
+    <canvas id="cert-canvas" class="cert-preview" aria-label="Certificate preview"></canvas>
+    <div class="btn-row">
+      <button class="btn green" id="dl-pdf" type="button">Download PDF</button>
+      <button class="btn secondary" id="dl-png" type="button">Download image (PNG)</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="review-card">
+    <h2>Correct answers</h2>
+    <div class="review-filter">
+      <button class="btn small secondary" data-filter="all" type="button">All</button>
+      <button class="btn small secondary" data-filter="wrong" type="button">Wrong only</button>
+      <button class="btn small secondary" data-filter="correct" type="button">Correct only</button>
+    </div>
+    <div id="review-list"></div>
+  </div>
+
+  <button class="btn block secondary" id="back-home" type="button">Back to start</button>
+</section>
+
+<!-- Loading -->
+<section id="view-loading" class="wrap center" style="padding-top:30vh">
+  <p class="muted">Loading…</p>
+</section>
+
+<!-- Confirm submit modal -->
+<div class="modal-backdrop hidden" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+  <div class="modal">
+    <h2 id="confirm-title">Submit exam?</h2>
+    <p>Are you sure you want to submit? You cannot change answers after this.</p>
+    <p class="small muted" id="confirm-unanswered"></p>
+    <div class="btn-row">
+      <button class="btn secondary" id="confirm-cancel" type="button">Cancel</button>
+      <button class="btn green" id="confirm-ok" type="button">Yes, submit</button>
+    </div>
+  </div>
+</div>
+
+<script src="/vendor/jspdf.umd.min.js" defer></script>
+<script src="/js/certificate.js" defer></script>
+<script src="/js/exam.js" defer></script>
+</body>
+</html>
